@@ -3,33 +3,34 @@
 
 ### Getting setup on BigQuery
 1. Getting setup on BigQuery.
-	2. Go to BigQuery UI https://console.cloud.google.com/bigquery
+	* Go to BigQuery UI https://console.cloud.google.com/bigquery
+
 2. Adding in the public data sets. 
-	3. Click the Add Data icon
-	4. Add any dataset
-	5. `bigquery-public-data` should become visible and populate. 
+	* Click the Add Data icon
+	* Add any dataset
+	* `bigquery-public-data` should become visible and populate. 
 3. How to effectively use the BigQuery UI
-	4. Navigating tables within DataSets
+4. Navigating tables within DataSets
 
 # Diving into SQL
 [Cheat Sheet](https://cdn.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf) 
 1. General syntax
-	2. Comments
-	3. Tables use back-ticks ` and not quotes '.
-	4. Limit 
-	```
+2. Comments
+3. Tables use back-ticks ` and not quotes '.
+4. Limit 
+	```sql
 	# SELECTING ALL ROWS, AND LIMITING
 	SELECT
 	  *
 	FROM
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	LIMIT
-	  1000
+	  11
 	```
 
 2.  Selecting columns
 	3. Auto complete with TAB
-	```
+	```sql
 	SELECT
 	  tree_id,
 	  status,
@@ -38,7 +39,7 @@
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	```
 3. Ordering 
-	```
+	```sql
 	SELECT
 	  *
 	FROM
@@ -48,7 +49,7 @@
 	  created_at ASC
 	```
 4. Renaming columns Using 'as'
-	```
+	```sql
 	SELECT
 	  tree_id AS id,
 	  status AS tree_status
@@ -56,7 +57,7 @@
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	```
 5. Renaming tables using 'as'
-	```
+	```sql
 	SELECT
 	  T.tree_id,
 	  T.status,
@@ -66,17 +67,17 @@
 	```
 6. Filtering using WHERE
 	7. And, Or, In, and Like
-	```
+	```sql
 	# USING 'AND'
 	SELECT
-	  *
+		*
 	FROM
-	  `bigquery-public-data.new_york_trees.tree_census_2015`
+		`bigquery-public-data.new_york_trees.tree_census_2015`
 	WHERE
-	  tree_id = "108086"
-	  AND status = "Alive"
+		block_id = "999999"
+		AND status = "Alive"
 	```
-	```
+	```sql
 	# USING 'OR'
 	SELECT
 	  *
@@ -86,7 +87,7 @@
 	  tree_id = 108086
 	  OR tree_id = 45875
 	```
-	```
+	```sql
 	# USING 'IN'
 	SELECT
 	  *
@@ -95,7 +96,7 @@
 	WHERE
 	  tree_id IN (108086, 45875)
 	```
-	```
+	```sql
 	# USING LIKE
 	SELECT
 	  *
@@ -105,8 +106,19 @@
 	  name LIKE '%Zac%'
 	```
 	
-8. Group By and functions
-	```
+8. Group By and functions. Finding the most commn trees in NY
+```sql
+SELECT
+  spc_common,
+  COUNT(spc_common) AS N
+FROM
+  `bigquery-public-data.new_york_trees.tree_census_2015`
+GROUP BY
+  spc_common
+ORDER BY
+  N desc
+```
+```sql
 	SELECT
 	  status,
 	  COUNT(status) AS counts,
@@ -116,8 +128,9 @@
 	GROUP BY
 	  status
 	```
+### Can anyone tell me how we could count how many unique blocks there are in this data set?
 
-	```
+```sql
 	# GROUP BY WITH AVERAGE
 	SELECT
 	  status,
@@ -127,8 +140,12 @@
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	GROUP BY
 	  status
-	```
-	```
+```
+### Can anyone tell me how we could find if there are any duplicate tree_ids?
+
+
+8. Double Group bys
+```sql
 	# DOUBLE GROUP BY 
 	SELECT
 	  status,
@@ -139,9 +156,10 @@
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	GROUP BY
 	  status, health
-	```
-9. Temporary Tables and how to use them.
-	```
+```
+
+9. Temporary Tables and how to use them.  Returning only blocks that have more than 50 trees on them.
+	```sql
 	WITH T AS (
 	  SELECT
 	    block_id,
@@ -153,10 +171,10 @@
 	  )
 	SELECT * FROM  T WHERE  counts > 50
 	```
-7. Changing column data types
-	8. Int to String
-	9. String to DateTime
-	```
+7. You can skip this in lecture, not super important, but good to know.  Changing column data types
+	* 8. Int to String
+	* 9. String to DateTime
+	```sql
 	SELECT
 	  CAST(year as STRING) as year_string,
 	  CAST(month as STRING) as month_string, 
@@ -167,7 +185,7 @@
 	  station_number = 723758
 	  AND year = 2009
 	```
-	```
+	```sql
 	WITH
 	# FIRST CAST EACH YEAR, MONTH, DATE TO STRINGS
 	  T AS (
@@ -183,7 +201,7 @@
 	    AND year = 2009 ),
 
 
-	# SECOND, CONCAT ALL THE STRINGS TOGETHER INTO ONE COLUMN]
+	# SECOND, CONCAT ALL THE STRINGS TOGETHER INTO ONE COLUMN
 	  TT AS (
 	  SELECT
 	    *,
@@ -209,8 +227,8 @@
 
 10. Joining tables
 * Review / go through duplicate column name errors.   
-	```
-	# WILL THROW DUPLICATE COLUMN ERROR
+	```sql
+	# Non BigQuery SQL may throw an error if there are duplcate column names.
 	WITH TABLE_2011 AS (
 	    SELECT descript, COUNT(unique_key) as count_2011 FROM `bigquery-public-data.austin_incidents.incidents_2011` GROUP BY descript
 	)
@@ -220,7 +238,7 @@
 	SELECT * FROM TABLE_2011 as A JOIN TABLE_2010 as B ON A.descript = B.descript
 	```
  
-	```
+	```sql
 	WITH TABLE_2011 AS (
 	    SELECT descript, COUNT(unique_key) as count_2011 FROM `bigquery-public-data.austin_incidents.incidents_2011` GROUP BY descript
 	)
@@ -231,7 +249,7 @@
 	```
 
 11. Assigning values using CASE WHEN
-```
+```sql
 WITH
   T AS (
   SELECT
