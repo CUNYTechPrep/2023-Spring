@@ -13,7 +13,7 @@
 4. Navigating tables within DataSets
 
 # Diving into SQL
-[Cheat Sheet](https://cdn.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf) 
+[Cheat Sheet](https://www.sqltutorial.org/wp-content/uploads/2016/04/SQL-cheat-sheet.pdf) 
 1. General syntax
 2. Comments
 3. Tables use back-ticks ` and not quotes '.
@@ -127,7 +127,7 @@ ORDER BY
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	GROUP BY
 	  status
-	```
+```
 ### Can anyone tell me how we could count how many unique blocks there are in this data set?
 
 ```sql
