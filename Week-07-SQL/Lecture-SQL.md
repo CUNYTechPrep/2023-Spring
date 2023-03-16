@@ -127,7 +127,7 @@ ORDER BY
 	  `bigquery-public-data.new_york_trees.tree_census_2015`
 	GROUP BY
 	  status
-	```
+```
 ### Can anyone tell me how we could count how many unique blocks there are in this data set?
 
 ```sql
