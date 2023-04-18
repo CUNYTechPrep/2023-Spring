@@ -1,7 +1,7 @@
 # How to use APIs effectively. 
 
 ## Agenda
-1. [Lecture](https://docs.google.com/presentation/d/1RtWKVZm53h316OjjiOz1QdWUWakjyvDrZ5m24Uy8rvw/edit#slide=id.p)
+1. [Lecture](https://docs.google.com/presentation/d/1ZC_nOOJxsBlizB8HkdSKg6d3JyhvgqETvXGXlFnjzs4/edit#slide=id.p)
 2. Live coding
 3. Setup
 4. Breakout Rooms
@@ -19,12 +19,8 @@
 1. Navigate to inside the repo you just cloned.
     * `cd openai-quickstart-python`
     * or `cd openai-quickstart-node`
-1. Open the hidden file `.env.example` file.
-    * On mac `nano .env.example`.
-    * On windows `IDK HOW TO DO THIS YET`.
+1. Copy the `.env.example` file into a new file `.env`
+1. Open `.env`:
+    * On mac `nano .env`.
+    * On windows open `.env` with your text editor.
 1. In that file, set the `OPENAI_API_KEY` equal to your secret API key.
-
-
-
-* Possible software to help with demonstrating APIs `https://crimson-desert-490005.postman.co/`
-
